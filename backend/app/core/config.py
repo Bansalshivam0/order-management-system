@@ -30,6 +30,10 @@ class Settings:
         ).split(",")
         if origin.strip()
     ]
+    cors_allow_origin_regex = os.getenv(
+        "FRONTEND_URL_REGEX",
+        r"https://order-management-system.*\.vercel\.app",
+    )
     database_url = os.getenv(
         "DATABASE_URL",
         "postgresql+psycopg://postgres:postgres@localhost:5432/order_management",
