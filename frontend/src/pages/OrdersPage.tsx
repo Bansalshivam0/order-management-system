@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import CustomSelect from '../components/CustomSelect'
+import { apiUrl } from '../lib/api'
 
 type Customer = { id: string; name: string }
 type Product = { id: string; product_name: string; price: number }
@@ -36,9 +37,9 @@ export default function OrdersPage() {
 
   async function load() {
     const [oRes, cRes, pRes] = await Promise.all([
-      fetch('/api/orders').catch(() => null),
-      fetch('/api/customers').catch(() => null),
-      fetch('/api/products').catch(() => null),
+      fetch(apiUrl('/api/orders')).catch(() => null),
+      fetch(apiUrl('/api/customers')).catch(() => null),
+      fetch(apiUrl('/api/products')).catch(() => null),
     ])
     if (oRes?.ok) setOrders(await oRes.json())
     if (cRes?.ok) setCustomers(await cRes.json())
@@ -73,7 +74,7 @@ export default function OrdersPage() {
 
   async function confirmCancel() {
     if (!cancelId) return
-    await fetch(`/api/orders/${cancelId}`, { method: 'DELETE' })
+    await fetch(apiUrl(`/api/orders/${cancelId}`), { method: 'DELETE' })
     setCancelId(null)
     await load()
     toast.success('Order cancelled — stock restored')
@@ -85,7 +86,7 @@ export default function OrdersPage() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/orders', {
+      const res = await fetch(apiUrl('/api/orders'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { apiUrl } from '../lib/api'
 
 type Product = {
   id: string
@@ -33,7 +34,7 @@ export default function ProductsPage() {
   const [error, setError] = useState('')
   const [deleteId, setDeleteId] = useState<string | null>(null)
   async function load() {
-    const res = await fetch('/api/products').catch(() => null)
+    const res = await fetch(apiUrl('/api/products')).catch(() => null)
     if (res?.ok) setProducts(await res.json())
   }
 
@@ -69,7 +70,7 @@ export default function ProductsPage() {
     setLoading(true)
     setError('')
     try {
-      const url = modal === 'edit' ? `/api/products/${editTarget!.id}` : '/api/products'
+      const url = modal === 'edit' ? apiUrl(`/api/products/${editTarget!.id}`) : apiUrl('/api/products')
       const payload = {
         product_name: form.product_name,
         sku_code: form.sku_code,
@@ -94,7 +95,7 @@ export default function ProductsPage() {
 
   async function confirmDelete() {
     if (!deleteId) return
-    const res = await fetch(`/api/products/${deleteId}`, { method: 'DELETE' })
+    const res = await fetch(apiUrl(`/api/products/${deleteId}`), { method: 'DELETE' })
     setDeleteId(null)
     if (!res.ok) {
       const body = await res.json().catch(() => ({}))

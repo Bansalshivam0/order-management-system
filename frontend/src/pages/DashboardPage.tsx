@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
+import { apiUrl } from '../lib/api'
 
 type TrendPoint = { date: string; orders: number; revenue: number }
 type TopProduct = { name: string; orders: number; revenue: number }
@@ -92,7 +93,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<'recent' | 'low-stock'>('recent')
 
   useEffect(() => {
-    fetch('/api/dashboard')
+    fetch(apiUrl('/api/dashboard'))
       .then((r) => r.json())
       .then((d) => { setStats(d); setLoading(false) })
       .catch(() => setLoading(false))

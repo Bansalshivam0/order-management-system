@@ -2,6 +2,7 @@ import { useState, useLayoutEffect, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import PhoneField from '../components/PhoneField'
+import { apiUrl } from '../lib/api'
 
 function SunIcon() {
   return (
@@ -70,7 +71,7 @@ export default function SignupPage() {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch(apiUrl('/api/auth/signup'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react'
 import { useAuth } from '../context/AuthContext'
 import PhoneField from '../components/PhoneField'
+import { apiUrl } from '../lib/api'
 
 function LogOutIcon() {
   return (
@@ -91,7 +92,7 @@ export default function ProfilePage() {
         body.new_password = passwords.new_password
       }
 
-      const res = await fetch('/api/auth/profile', {
+      const res = await fetch(apiUrl('/api/auth/profile'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

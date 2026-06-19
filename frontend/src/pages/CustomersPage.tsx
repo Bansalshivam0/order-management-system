@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { apiUrl } from '../lib/api'
 
 type Customer = {
   id: string
@@ -20,7 +21,7 @@ export default function CustomersPage() {
   const [error, setError] = useState('')
   const [deleteId, setDeleteId] = useState<string | null>(null)
   async function load() {
-    const res = await fetch('/api/customers').catch(() => null)
+    const res = await fetch(apiUrl('/api/customers')).catch(() => null)
     if (res?.ok) setCustomers(await res.json())
   }
 
@@ -46,7 +47,7 @@ export default function CustomersPage() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/customers', {
+      const res = await fetch(apiUrl('/api/customers'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -64,7 +65,7 @@ export default function CustomersPage() {
 
   async function confirmDelete() {
     if (!deleteId) return
-    const res = await fetch(`/api/customers/${deleteId}`, { method: 'DELETE' })
+    const res = await fetch(apiUrl(`/api/customers/${deleteId}`), { method: 'DELETE' })
     setDeleteId(null)
     if (!res.ok) {
       const body = await res.json().catch(() => ({}))

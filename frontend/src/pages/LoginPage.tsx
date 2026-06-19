@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { apiUrl } from '../lib/api'
 
 type Step = 'login' | 'otp-phone' | 'otp-code'
 
@@ -76,7 +77,7 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -97,7 +98,7 @@ export default function LoginPage() {
     setLoading(true)
     try {
       if (form.email) {
-        const res = await fetch('/api/auth/get-phone', {
+        const res = await fetch(apiUrl('/api/auth/get-phone'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: form.email }),
@@ -121,7 +122,7 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch('/api/auth/request-otp', {
+      const res = await fetch(apiUrl('/api/auth/request-otp'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone_number: phone }),
@@ -148,7 +149,7 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch('/api/auth/verify-otp', {
+      const res = await fetch(apiUrl('/api/auth/verify-otp'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone_number: otpPhone, otp: otpCode }),
