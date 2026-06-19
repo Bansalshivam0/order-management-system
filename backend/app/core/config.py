@@ -22,6 +22,14 @@ load_env_file()
 class Settings:
     app_name = "Order Management System API"
     app_version = "0.1.0"
+    cors_allow_origins = [
+        origin.strip()
+        for origin in os.getenv(
+            "FRONTEND_URLS",
+            "http://localhost:5173,http://127.0.0.1:5173",
+        ).split(",")
+        if origin.strip()
+    ]
     database_url = os.getenv(
         "DATABASE_URL",
         "postgresql+psycopg://postgres:postgres@localhost:5432/order_management",
